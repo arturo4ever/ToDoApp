@@ -4,42 +4,36 @@ import TodoSearch from './Components/TodoSearch';
 import TodoList from './Components/TodoList';
 import TodoItem from './Components/TodoItem';
 import CreateTodoButton from './Components/CreateTodoButton';
+import { TodoContext } from './ToDoContext/ToDoContext';
 
-export default function AppUI({
-    completedTodos,
-    todos,
-    search,
-    setSearch,
-    searchedTodos,
-    completeTodo,
-    deleteTodo,
-    setTodos
-}) {
+export default function AppUI() {
     return (
-    <React.Fragment>
-      <TodoCounter 
-        completedTodos={completedTodos}
-        todos={todos}
-      />
-      <TodoSearch 
-        search={search}
-        setSearch={setSearch}
-      />
-          <TodoList>
-            {searchedTodos.map( todo => (
-              <TodoItem 
-              key={todo.name}
-              name={todo.name}
-              completed={todo.completed} 
-              onComplete={() => completeTodo(todo.name)}
-              onDelete={() => deleteTodo(todo.name)}
-              />
-              ))}
-          </TodoList>
-      <CreateTodoButton 
-        todos={todos}
-        setTodos={setTodos}
-      />
-    </React.Fragment>
+      <React.Fragment>
+        <TodoCounter />
+        <TodoSearch />
+          <TodoContext.Consumer>
+            {({ error,
+              loading,
+              searchedTodos,
+              completeTodo,
+              deleteTodo }) => (
+                <TodoList>
+                  {error && <p>ERROR...</p>}
+                  {loading && <p>Cargando...</p>}
+                  {(!loading && !searchedTodos.length) && <p>Crea tu primer To Do...</p>}
+                  {searchedTodos.map( todo => (
+                    <TodoItem 
+                      key={todo.name}
+                      name={todo.name}
+                      completed={todo.completed} 
+                      onComplete={() => completeTodo(todo.name)}
+                      onDelete={() => deleteTodo(todo.name)}
+                      />
+                    ))}
+                </TodoList>
+              )}
+            </TodoContext.Consumer>
+        <CreateTodoButton />
+      </React.Fragment>
   );
 }

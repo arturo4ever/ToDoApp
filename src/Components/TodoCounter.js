@@ -1,8 +1,8 @@
 import React from 'react';
 import '../Styles/TodoCounter.css';
 
-export default function TodoCounter({ completedTodos, todos }) {
+export default function TodoCounter({ completedTodos, totalTodos }) {
     return (
-        <h2 className='TodoCounter'>Has completado {completedTodos} de {todos.length} Tareas</h2>
+        <h2 className='TodoCounter'>Has completado {completedTodos} de {totalTodos} Tareas</h2>
     )
 }
